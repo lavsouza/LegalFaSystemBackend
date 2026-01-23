@@ -1,13 +1,12 @@
 package legalfasystem.enums;
 
-//table("usuarioperfil")
 public enum UsuarioPerfil {
 
-    ADMIN("admin"),
-    GESTOR("gestor"),
-    ADVOGADO("advogado"),
-    ANALISTA("analista"),
-    ESTAGIARIO("estagiario");
+    ADMIN("ROLE_ADMIN"),
+    GESTOR("ROLE_GESTOR"),
+    ADVOGADO("ROLE_ADVOGADO"),
+    ANALISTA("ROLE_ANALISTA"),
+    ESTAGIARIO("ROLE_ESTAGIARIO");
 
     private final String role;
 
@@ -18,5 +17,4 @@ public enum UsuarioPerfil {
     public String getRole() {
         return role;
     }
-
 }

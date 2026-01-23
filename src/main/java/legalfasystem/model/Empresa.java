@@ -1,26 +1,49 @@
 package legalfasystem.model;
 
-import java.sql.Blob;
+import jakarta.persistence.*;
 import java.util.List;
 
-// table("usuario")
+@Entity
+@Table(name = "empresa")
 public class Empresa {
-    private int id;
-    private Usuario user;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "razao_social", nullable = false)
     private String razaoSocial;
+
+    @Column(nullable = false, unique = true, length = 14)
     private String cnpj;
+
+    @Column(nullable = false)
     private String email;
+
+    @Column(length = 20)
     private String telefone;
+
+    @Column
     private String endereco;
-    private Blob logoCabecalho;
-    private Blob logoRodape;
+
+    @Lob
+    @Column(name = "logo_cabecalho")
+    private byte[] logoCabecalho;
+
+    @Lob
+    @Column(name = "logo_rodape")
+    private byte[] logoRodape;
+
+    @OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Funcionario> funcionarios;
 
-    public int getId() {
+    public Empresa() {}
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -64,21 +87,27 @@ public class Empresa {
         this.endereco = endereco;
     }
 
-    public Blob getLogoCabecalho() {
+    public byte[] getLogoCabecalho() {
         return logoCabecalho;
     }
 
-    public void setLogoCabecalho(Blob logoCabecalho) {
+    public void setLogoCabecalho(byte[] logoCabecalho) {
         this.logoCabecalho = logoCabecalho;
     }
 
-    public Blob getLogoRodape() {
+    public byte[] getLogoRodape() {
         return logoRodape;
     }
 
-    public void setLogoRodape(Blob logoRodape) {
+    public void setLogoRodape(byte[] logoRodape) {
         this.logoRodape = logoRodape;
     }
 
+    public List<Funcionario> getFuncionarios() {
+        return funcionarios;
+    }
 
+    public void setFuncionarios(List<Funcionario> funcionarios) {
+        this.funcionarios = funcionarios;
+    }
 }

@@ -1,15 +1,74 @@
 package legalfasystem.model;
 
-import legalfasystem.enums.UsuarioPerfil;
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
-//table("funcionario")
+@Entity
+@Table(name = "funcionario")
 public class Funcionario {
-    private int id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @OneToOne
+    @JoinColumn(name = "usuario_id", nullable = false, unique = true)
+    private Usuario usuario;
+
+    @ManyToOne
+    @JoinColumn(name = "empresa_id", nullable = false)
+    private Empresa empresa;
+
+    @Column(nullable = false)
     private String nome;
-    private String cpf;
-    private String email;
-    private String telefone;
-    private String login;
-    private String senha;
-    private UsuarioPerfil perfil;
+
+    @Column(nullable = false)
+    private Boolean ativo = true;
+
+    @Column(name = "data_criacao", nullable = false)
+    private LocalDateTime dataCriacao;
+
+    public Funcionario() {
+        this.dataCriacao = LocalDateTime.now();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public Empresa getEmpresa() {
+        return empresa;
+    }
+
+    public void setEmpresa(Empresa empresa) {
+        this.empresa = empresa;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public Boolean getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(Boolean ativo) {
+        this.ativo = ativo;
+    }
+
+    public LocalDateTime getDataCriacao() {
+        return dataCriacao;
+    }
 }
