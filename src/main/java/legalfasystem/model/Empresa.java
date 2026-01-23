@@ -1,13 +1,12 @@
 package legalfasystem.model;
 
-import legalfasystem.enums.UserRole;
-
 import java.sql.Blob;
 import java.util.List;
 
+// table("usuario")
 public class Empresa {
     private int id;
-    private User user;
+    private Usuario user;
     private String razaoSocial;
     private String cnpj;
     private String email;
@@ -15,7 +14,7 @@ public class Empresa {
     private String endereco;
     private Blob logoCabecalho;
     private Blob logoRodape;
-    private List<Funcionario> funcionario;
+    private List<Funcionario> funcionarios;
 
     public int getId() {
         return id;
@@ -80,4 +79,6 @@ public class Empresa {
     public void setLogoRodape(Blob logoRodape) {
         this.logoRodape = logoRodape;
     }
+
+
 }

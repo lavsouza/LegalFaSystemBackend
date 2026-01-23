@@ -1,6 +1,7 @@
 package legalfasystem.enums;
 
-public enum UserRole {
+//table("usuarioperfil")
+public enum UsuarioPerfil {
 
     ADMIN("admin"),
     GESTOR("gestor"),
@@ -10,11 +11,12 @@ public enum UserRole {
 
     private final String role;
 
-    UserRole(String role) {
+    UsuarioPerfil(String role) {
         this.role = role;
     }
 
     public String getRole() {
         return role;
     }
+
 }
