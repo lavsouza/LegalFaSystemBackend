@@ -29,6 +29,10 @@ public class Contrato {
     @JoinColumn(name = "funcionario_responsavel_id", nullable = false)
     private Funcionario funcionarioResponsavel;
 
+    @ManyToOne
+    @JoinColumn(name = "template_id", nullable = false)
+    private TemplateContrato template;
+
     @Column(name = "data_criacao", nullable = false)
     private LocalDateTime dataCriacao;
 
