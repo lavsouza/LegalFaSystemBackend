@@ -2,10 +2,17 @@ package legalfasystem.model;
 
 import jakarta.persistence.*;
 import legalfasystem.enums.UsuarioPerfil;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "usuario")
-public class Usuario {
+public class Usuario implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,6 +29,12 @@ public class Usuario {
     private UsuarioPerfil perfil;
 
     public Usuario() {}
+
+    public Usuario(String login, String senha, UsuarioPerfil perfil) {
+        this.login = login;
+        this.senha = senha;
+        this.perfil = perfil;
+    }
 
     public Long getId() {
         return id;
@@ -53,5 +66,44 @@ public class Usuario {
 
     public void setPerfil(UsuarioPerfil perfil) {
         this.perfil = perfil;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority("ROLE_" + this.perfil.name()));
+    }
+
+    public String getPassword() {
+        return senha;
+    }
+
+    @Override
+    public String getUsername() {
+        return login;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true; // Alterado de false para true
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true; // Alterado de false para true
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true; // Alterado de false para true
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true; // Alterado de false para true
     }
 }

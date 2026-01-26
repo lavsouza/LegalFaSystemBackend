@@ -2,19 +2,19 @@ package legalfasystem.enums;
 
 public enum UsuarioPerfil {
 
-    ADMIN("ROLE_ADMIN"),
-    GESTOR("ROLE_GESTOR"),
-    ADVOGADO("ROLE_ADVOGADO"),
-    ANALISTA("ROLE_ANALISTA"),
-    ESTAGIARIO("ROLE_ESTAGIARIO");
+    ADMIN("admin"),
+    GESTOR("gestor"),
+    ADVOGADO("advogado"),
+    ANALISTA("analista"),
+    ESTAGIARIO("estagiario");
 
-    private final String role;
+    private final String perfil;
 
-    UsuarioPerfil(String role) {
-        this.role = role;
+    UsuarioPerfil(String perfil) {
+        this.perfil = perfil;
     }
 
-    public String getRole() {
-        return role;
+    public String getPerfil() {
+        return perfil;
     }
 }
