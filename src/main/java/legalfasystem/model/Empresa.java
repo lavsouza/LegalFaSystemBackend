@@ -34,7 +34,7 @@ public class Empresa {
     @Column(name = "logo_rodape")
     private byte[] logoRodape;
 
-    @OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Funcionario> funcionarios;
 
     public Empresa() {}

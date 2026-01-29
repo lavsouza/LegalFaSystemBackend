@@ -42,8 +42,18 @@ public class SecurityConfiguration {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
+                        // Rotas Públicas
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
+
+                        // Rotas de Empresa (Exemplo: só ADMIN pode criar/deletar)
+                        .requestMatchers(HttpMethod.POST, "/api/empresas/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/empresas/**").hasRole("ADMIN")
+
+                        // Qualquer outra rota de API exige apenas estar logado
+                        .requestMatchers("/api/**").authenticated()
+
+                        .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

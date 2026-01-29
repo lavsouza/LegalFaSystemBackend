@@ -6,7 +6,9 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <!-- Spring Boot Parent -->
+    <!-- ===================================================== -->
+    <!-- Parent: Spring Boot                                   -->
+    <!-- ===================================================== -->
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -14,77 +16,106 @@
         <relativePath/>
     </parent>
 
+    <!-- ===================================================== -->
+    <!-- Project Info                                          -->
+    <!-- ===================================================== -->
     <groupId>legalfasystem</groupId>
     <artifactId>legalfasystem</artifactId>
     <version>1.0.0</version>
     <name>legalfasystem</name>
-    <description>Backend para facilitação de criação de contratos legais usando Legal Design</description>
+    <description>
+        Backend para facilitação de criação de contratos legais usando Legal Design
+    </description>
 
+    <!-- ===================================================== -->
+    <!-- Properties                                            -->
+    <!-- ===================================================== -->
     <properties>
         <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencies>
-        <!-- Spring Web (REST API) -->
+
+        <!-- ================================================= -->
+        <!-- Web / REST API                                    -->
+        <!-- ================================================= -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <!-- Spring Data JPA -->
+        <!-- ================================================= -->
+        <!-- Validation (Bean Validation - Jakarta)             -->
+        <!-- ================================================= -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
+        <!-- ================================================= -->
+        <!-- Security & Authentication                          -->
+        <!-- ================================================= -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
+        <!-- JWT para autenticação baseada em token -->
+        <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+            <version>4.5.0</version>
+        </dependency>
+
+        <!-- ================================================= -->
+        <!-- Persistence / JPA                                 -->
+        <!-- ================================================= -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
 
-        <!-- PostgreSQL Driver -->
+        <!-- Driver PostgreSQL (produção) -->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
         </dependency>
 
-        <!-- Bean Validation (Jakarta Validation) -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-validation</artifactId>
-        </dependency>
-
-        <!-- Testes -->
+        <!-- ================================================= -->
+        <!-- Testing                                           -->
+        <!-- ================================================= -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
 
+        <!-- Suporte a testes de segurança -->
         <dependency>
             <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-test</artifactId> <scope>test</scope>
+            <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
         </dependency>
 
-        <!-- Security -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.auth0</groupId>
-            <artifactId>java-jwt</artifactId>
-            <version>4.5.0</version>
+            <artifactId>spring-boot-devtools</artifactId>
+            <scope>runtime</scope>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 
+    <!-- ===================================================== -->
+    <!-- Build Plugins                                        -->
+    <!-- ===================================================== -->
     <build>
         <plugins>
-
-            <!-- Plugin do Spring Boot -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
-
         </plugins>
     </build>
 
