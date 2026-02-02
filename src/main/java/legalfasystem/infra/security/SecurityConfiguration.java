@@ -43,11 +43,11 @@ public class SecurityConfiguration {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         // Rotas Públicas
+                        .requestMatchers(HttpMethod.POST, "/api/empresas/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
 
-                        // Rotas de Empresa (Exemplo: só ADMIN pode criar/deletar)
-                        .requestMatchers(HttpMethod.POST, "/api/empresas/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/empresas/**").hasAnyRole("ADMIN", "GESTOR")
                         .requestMatchers(HttpMethod.DELETE, "/api/empresas/**").hasRole("ADMIN")
 
                         // Qualquer outra rota de API exige apenas estar logado

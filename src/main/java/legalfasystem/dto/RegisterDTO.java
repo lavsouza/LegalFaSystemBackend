@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import legalfasystem.enums.UsuarioPerfil;
+import legalfasystem.model.Empresa;
 
 public record RegisterDTO(
         @NotBlank(message = "O login é obrigatório")
@@ -19,5 +20,9 @@ public record RegisterDTO(
         String senha,
 
         @NotNull(message = "O role é obrigatória")
-        UsuarioPerfil role
+        UsuarioPerfil role,
+
+        @NotNull(message = "Empresa é obrigatoria")
+        Empresa empresa
+
 ) {}

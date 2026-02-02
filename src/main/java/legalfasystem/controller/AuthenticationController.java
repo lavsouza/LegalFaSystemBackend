@@ -47,8 +47,12 @@ public class AuthenticationController {
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.senha());
         Usuario newUser = new Usuario(data.login(), encryptedPassword, data.role());
-
         this.usuarioRepositorio.save(newUser);
 
+
+        //Cadastrar Funcionario
+
+        //Funcionario newFunc = new Funcionario(newUser.getId(), data.empresa.getId(),
+        //this.funcionarioRepositorio4.save(newFunc);
         return ResponseEntity.status(HttpStatus.CREATED).build();    }
 }
