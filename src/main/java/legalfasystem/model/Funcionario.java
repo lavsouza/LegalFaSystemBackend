@@ -28,6 +28,14 @@ public class Funcionario {
     @Column(name = "data_criacao", nullable = false)
     private LocalDateTime dataCriacao;
 
+    public Funcionario(Usuario usuario, Empresa empresa, String nome, Boolean ativo, LocalDateTime dataCriacao) {
+        this.usuario = usuario;
+        this.empresa = empresa;
+        this.nome = nome;
+        this.ativo = ativo;
+        this.dataCriacao = dataCriacao;
+    }
+
     public Funcionario() {
         this.dataCriacao = LocalDateTime.now();
     }

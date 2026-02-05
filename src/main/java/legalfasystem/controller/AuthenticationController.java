@@ -5,7 +5,11 @@ import legalfasystem.dto.AuthenticationDTO;
 import legalfasystem.dto.LoginResponseDTO;
 import legalfasystem.dto.RegistroUsuarioDTO;
 import legalfasystem.infra.security.TokenService;
+import legalfasystem.model.Empresa;
+import legalfasystem.model.Funcionario;
 import legalfasystem.model.Usuario;
+import legalfasystem.repository.EmpresaRepository;
+import legalfasystem.repository.FuncionarioRepository;
 import legalfasystem.repository.UsuarioRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
+
 
 @RestController
 @RequestMapping("/auth")
@@ -25,10 +31,19 @@ public class AuthenticationController {
     private final AuthenticationManager authenticationManager;
     private final UsuarioRepository usuarioRepository;
     private final TokenService tokenService;
+    private final FuncionarioRepository funcionarioRepository;
+    private final EmpresaRepository empresaRepository;
 
-    public AuthenticationController(AuthenticationManager authenticationManager, UsuarioRepository usuarioRepository, TokenService tokenService) {
+    public AuthenticationController(
+            AuthenticationManager authenticationManager,
+            UsuarioRepository usuarioRepository,
+            FuncionarioRepository funcionarioRepository,
+            EmpresaRepository  empresaRepository,
+            TokenService tokenService) {
         this.authenticationManager = authenticationManager;
         this.usuarioRepository = usuarioRepository;
+        this.funcionarioRepository = funcionarioRepository;
+        this.empresaRepository = empresaRepository;
         this.tokenService = tokenService;
     }
 
@@ -43,15 +58,31 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     public ResponseEntity<Void> register(@RequestBody @Valid RegistroUsuarioDTO data) {
-        if (this.usuarioRepository.findByLogin(data.login()) != null) return ResponseEntity.badRequest().build();
 
+        if (usuarioRepository.findByLogin(data.login()) != null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        // Cria usuário
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.senha());
         Usuario newUser = new Usuario(data.login(), encryptedPassword, data.role());
-        this.usuarioRepository.save(newUser);
+        usuarioRepository.save(newUser);
 
-        //Cadastrar Funcionario
+        // Busca empresa pelo ID
+        Empresa empresa = empresaRepository.findById(data.empresaId())
+                .orElseThrow(() -> new RuntimeException("Empresa não encontrada"));
 
-        //Funcionario newFunc = new Funcionario(newUser.getId(), data.empresa.getId(),
-        //this.funcionarioRepositorio4.save(newFunc);
-        return ResponseEntity.status(HttpStatus.CREATED).build();    }
+        // Cria funcionário
+        Funcionario newFunc = new Funcionario(
+                newUser,
+                empresa,
+                data.nomeCompleto(),
+                true,
+                LocalDateTime.now()
+        );
+
+        funcionarioRepository.save(newFunc);
+
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
 }
