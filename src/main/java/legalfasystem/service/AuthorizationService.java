@@ -1,6 +1,6 @@
 package legalfasystem.service;
 
-import legalfasystem.repository.UsuarioRepositorio;
+import legalfasystem.repository.UsuarioRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthorizationService implements UserDetailsService {
 
-    private final UsuarioRepositorio repositorio;
+    private final UsuarioRepository repositorio;
 
-    public AuthorizationService(UsuarioRepositorio repositorio) {
+    public AuthorizationService(UsuarioRepository repositorio) {
         this.repositorio = repositorio;
     }
 

@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Size;
 import legalfasystem.enums.UsuarioPerfil;
 import legalfasystem.model.Empresa;
 
-public record RegisterDTO(
+public record RegistroFuncionarioDTO(
         @NotBlank(message = "O login é obrigatório")
         String login,
 

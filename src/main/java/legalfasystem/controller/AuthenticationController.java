@@ -3,10 +3,10 @@ package legalfasystem.controller;
 import jakarta.validation.Valid;
 import legalfasystem.dto.AuthenticationDTO;
 import legalfasystem.dto.LoginResponseDTO;
-import legalfasystem.dto.RegisterDTO;
+import legalfasystem.dto.RegistroUsuarioDTO;
 import legalfasystem.infra.security.TokenService;
 import legalfasystem.model.Usuario;
-import legalfasystem.repository.UsuarioRepositorio;
+import legalfasystem.repository.UsuarioRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,12 +23,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthenticationController {
 
     private final AuthenticationManager authenticationManager;
-    private final UsuarioRepositorio usuarioRepositorio;
+    private final UsuarioRepository usuarioRepository;
     private final TokenService tokenService;
 
-    public AuthenticationController(AuthenticationManager authenticationManager, UsuarioRepositorio usuarioRepositorio, TokenService tokenService) {
+    public AuthenticationController(AuthenticationManager authenticationManager, UsuarioRepository usuarioRepository, TokenService tokenService) {
         this.authenticationManager = authenticationManager;
-        this.usuarioRepositorio = usuarioRepositorio;
+        this.usuarioRepository = usuarioRepository;
         this.tokenService = tokenService;
     }
 
@@ -42,13 +42,12 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Void> register(@RequestBody @Valid RegisterDTO data) {
-        if (this.usuarioRepositorio.findByLogin(data.login()) != null) return ResponseEntity.badRequest().build();
+    public ResponseEntity<Void> register(@RequestBody @Valid RegistroUsuarioDTO data) {
+        if (this.usuarioRepository.findByLogin(data.login()) != null) return ResponseEntity.badRequest().build();
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.senha());
         Usuario newUser = new Usuario(data.login(), encryptedPassword, data.role());
-        this.usuarioRepositorio.save(newUser);
-
+        this.usuarioRepository.save(newUser);
 
         //Cadastrar Funcionario
 

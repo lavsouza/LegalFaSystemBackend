@@ -2,7 +2,7 @@ package legalfasystem.controller;
 
 import legalfasystem.enums.UsuarioPerfil;
 import legalfasystem.model.Usuario;
-import legalfasystem.repository.UsuarioRepositorio;
+import legalfasystem.repository.UsuarioRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,21 +27,21 @@ class AuthenticationControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private UsuarioRepositorio usuarioRepositorio;
+    private UsuarioRepository usuarioRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @BeforeEach
     void setup() {
-        usuarioRepositorio.deleteAll();
+        usuarioRepository.deleteAll();
 
         Usuario usuario = new Usuario(
                 "admin_teste",
                 passwordEncoder.encode("Ta@1234"),
                 UsuarioPerfil.ADMIN
         );
-        usuarioRepositorio.save(usuario);
+        usuarioRepository.save(usuario);
     }
 
     @Test

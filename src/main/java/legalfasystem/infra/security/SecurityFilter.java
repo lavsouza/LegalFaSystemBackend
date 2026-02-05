@@ -4,7 +4,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import legalfasystem.repository.UsuarioRepositorio;
+import legalfasystem.repository.UsuarioRepository;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,11 +17,11 @@ import java.io.IOException;
 public class SecurityFilter extends OncePerRequestFilter {
 
     private final TokenService tokenService;
-    private final UsuarioRepositorio usuarioRepositorio;
+    private final UsuarioRepository usuarioRepository;
 
-    public SecurityFilter(TokenService tokenService, UsuarioRepositorio usuarioRepositorio) {
+    public SecurityFilter(TokenService tokenService, UsuarioRepository usuarioRepository) {
         this.tokenService = tokenService;
-        this.usuarioRepositorio = usuarioRepositorio;
+        this.usuarioRepository = usuarioRepository;
     }
 
     @Override
@@ -29,7 +29,7 @@ public class SecurityFilter extends OncePerRequestFilter {
         var token = this.recoverToken(request);
         if (token != null) {
             var login = tokenService.validateToken(token);
-            UserDetails usuario = usuarioRepositorio.findByLogin(login);
+            UserDetails usuario = usuarioRepository.findByLogin(login);
 
             var authentication = new UsernamePasswordAuthenticationToken(usuario, null, usuario.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
