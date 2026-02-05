@@ -19,7 +19,7 @@ public class Contrato {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private StatusContrato status;
+    private StatusContrato status = StatusContrato.RASCUNHO;
 
     @ManyToOne
     @JoinColumn(name = "empresa_id", nullable = false)
@@ -46,6 +46,17 @@ public class Contrato {
     public Contrato() {
         this.dataCriacao = LocalDateTime.now();
         this.status = StatusContrato.RASCUNHO;
+    }
+
+    public Contrato(String titulo, StatusContrato status, Empresa empresa, Funcionario funcionarioResponsavel, TemplateContrato template, LocalDateTime dataCriacao, LocalDateTime dataAtualizacao, List<HistoricoStatusContrato> historicoStatus) {
+        this.titulo = titulo;
+        this.status = status;
+        this.empresa = empresa;
+        this.funcionarioResponsavel = funcionarioResponsavel;
+        this.template = template;
+        this.dataCriacao = dataCriacao;
+        this.dataAtualizacao = dataAtualizacao;
+        this.historicoStatus = historicoStatus;
     }
 
     // Getters e setters

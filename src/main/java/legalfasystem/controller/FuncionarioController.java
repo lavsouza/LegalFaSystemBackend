@@ -29,12 +29,6 @@ public class FuncionarioController {
         return ResponseEntity.ok(service.buscarPorId(id));
     }
 
-    @PostMapping
-    public ResponseEntity<Funcionario> salvar(@RequestBody Funcionario funcionario) {
-        Funcionario salvo = service.salvar(funcionario);
-        return ResponseEntity.status(HttpStatus.CREATED).body(salvo);
-    }
-
     @PutMapping("/{id}")
     public ResponseEntity<Funcionario> atualizar(
             @PathVariable Long id,

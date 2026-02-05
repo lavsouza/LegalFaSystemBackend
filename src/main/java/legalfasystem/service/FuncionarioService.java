@@ -1,13 +1,17 @@
 package legalfasystem.service;
 
+import legalfasystem.model.Funcionario;
 import org.springframework.stereotype.Service;
 
 import legalfasystem.repository.FuncionarioRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class FuncionarioService {
 
-    private FuncionarioRepository repository;
+    private final FuncionarioRepository repository;
 
     public FuncionarioService(FuncionarioRepository repository) {
         this.repository = repository;

@@ -82,7 +82,7 @@ public class AuthenticationController {
                 LocalDateTime.now()
         );
 
-        funcionarioService.save(newFunc);
+        funcionarioService.salvar(newFunc);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
