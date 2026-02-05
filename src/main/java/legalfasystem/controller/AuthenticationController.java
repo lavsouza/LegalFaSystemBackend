@@ -9,8 +9,9 @@ import legalfasystem.model.Empresa;
 import legalfasystem.model.Funcionario;
 import legalfasystem.model.Usuario;
 import legalfasystem.repository.EmpresaRepository;
-import legalfasystem.repository.FuncionarioRepository;
 import legalfasystem.repository.UsuarioRepository;
+import legalfasystem.service.FuncionarioService;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -31,18 +32,18 @@ public class AuthenticationController {
     private final AuthenticationManager authenticationManager;
     private final UsuarioRepository usuarioRepository;
     private final TokenService tokenService;
-    private final FuncionarioRepository funcionarioRepository;
+    private final FuncionarioService funcionarioService;
     private final EmpresaRepository empresaRepository;
 
     public AuthenticationController(
             AuthenticationManager authenticationManager,
             UsuarioRepository usuarioRepository,
-            FuncionarioRepository funcionarioRepository,
+            FuncionarioService funcionarioService,
             EmpresaRepository  empresaRepository,
             TokenService tokenService) {
         this.authenticationManager = authenticationManager;
         this.usuarioRepository = usuarioRepository;
-        this.funcionarioRepository = funcionarioRepository;
+        this.funcionarioService = funcionarioService;
         this.empresaRepository = empresaRepository;
         this.tokenService = tokenService;
     }
@@ -81,7 +82,7 @@ public class AuthenticationController {
                 LocalDateTime.now()
         );
 
-        funcionarioRepository.save(newFunc);
+        funcionarioService.salvar(newFunc);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
