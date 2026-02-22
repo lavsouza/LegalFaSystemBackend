@@ -1,12 +1,14 @@
 package legalfasystem.service;
 
-import legalfasystem.model.Funcionario;
-import org.springframework.stereotype.Service;
+import java.util.List;
+import java.util.Optional;
 
-import legalfasystem.repository.FuncionarioRepository;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import legalfasystem.model.Funcionario;
+import legalfasystem.model.Usuario;
+import legalfasystem.repository.FuncionarioRepository;
 
 @Service
 public class FuncionarioService {
@@ -20,7 +22,9 @@ public class FuncionarioService {
     public List<Funcionario> listarTodos() {
         return repository.findAll();
     }
-
+public Optional<Funcionario> buscarPorUsuario(Usuario usuario) {
+    return repository.findByUsuario(usuario);
+}
     public Funcionario buscarPorId(Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Funcionario não encontrado"));

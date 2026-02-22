@@ -1,16 +1,6 @@
 package legalfasystem.controller;
 
-import jakarta.validation.Valid;
-import legalfasystem.dto.AuthenticationDTO;
-import legalfasystem.dto.LoginResponseDTO;
-import legalfasystem.dto.RegistroUsuarioDTO;
-import legalfasystem.infra.security.TokenService;
-import legalfasystem.model.Empresa;
-import legalfasystem.model.Funcionario;
-import legalfasystem.model.Usuario;
-import legalfasystem.repository.EmpresaRepository;
-import legalfasystem.repository.UsuarioRepository;
-import legalfasystem.service.FuncionarioService;
+import java.time.LocalDateTime;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +12,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
+import jakarta.validation.Valid;
+import legalfasystem.dto.AuthenticationDTO;
+import legalfasystem.dto.EmpresaResumoDTO;
+import legalfasystem.dto.FuncionarioDTO;
+import legalfasystem.dto.LoginResponseDTO;
+import legalfasystem.dto.RegistroUsuarioDTO;
+import legalfasystem.dto.UsuarioLogadoDTO;
+import legalfasystem.infra.security.TokenService;
+import legalfasystem.model.Empresa;
+import legalfasystem.model.Funcionario;
+import legalfasystem.model.Usuario;
+import legalfasystem.repository.EmpresaRepository;
+import legalfasystem.repository.UsuarioRepository;
+import legalfasystem.service.FuncionarioService;
 
 
 @RestController
@@ -49,13 +52,43 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid AuthenticationDTO data) {
-        var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.senha());
-        var auth = this.authenticationManager.authenticate(usernamePassword);
-        var token = tokenService.generateToken((Usuario) auth.getPrincipal());
+public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid AuthenticationDTO data) {
+    var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.senha());
+    var auth = this.authenticationManager.authenticate(usernamePassword);
+    
+    Usuario usuario = (Usuario) auth.getPrincipal();
+    var token = tokenService.generateToken(usuario);
 
-        return ResponseEntity.ok(new LoginResponseDTO(token));
-    }
+    // Buscar funcionário do usuário
+    Funcionario funcionario = funcionarioService.buscarPorUsuario(usuario)
+            .orElseThrow(() -> new RuntimeException("Funcionário não encontrado"));
+
+    // Montar DTOs
+    EmpresaResumoDTO empresaDTO = new EmpresaResumoDTO(
+        funcionario.getEmpresa().getId(),
+        funcionario.getEmpresa().getRazaoSocial(),
+        funcionario.getEmpresa().getCnpj(),
+        funcionario.getEmpresa().getEmail(),
+        funcionario.getEmpresa().getTelefone(),
+        funcionario.getEmpresa().getEndereco()
+    );
+
+    FuncionarioDTO funcionarioDTO = new FuncionarioDTO(
+        funcionario.getId(),
+        funcionario.getNome(),
+        funcionario.getAtivo(),
+        empresaDTO
+    );
+
+    UsuarioLogadoDTO usuarioDTO = new UsuarioLogadoDTO(
+        usuario.getId(),
+        usuario.getLogin(),
+        usuario.getPerfil(),
+        funcionarioDTO
+    );
+
+    return ResponseEntity.ok(new LoginResponseDTO(token, usuarioDTO));
+}
 
     @PostMapping("/register")
     public ResponseEntity<Void> register(@RequestBody @Valid RegistroUsuarioDTO data) {
@@ -87,3 +120,14 @@ public class AuthenticationController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }
+
+
+
+
+/*
+joao@hotmail.com
+Joao123@
+
+dienelena9@gmail.com
+Ravenna1@
+*/
