@@ -1,10 +1,11 @@
 package legalfasystem.repository;
 
-import legalfasystem.model.Contrato;
-import org.springframework.data.jpa.repository.JpaRepository;
-
 import java.util.List;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import legalfasystem.model.Contrato;
+
 public interface ContratoRepository extends JpaRepository<Contrato, Long> {
-    public List<Contrato> findAllByEmpresaId(long id);
+    List<Contrato> findByEmpresaId(Long empresaId);
 }

@@ -16,6 +16,6 @@ public interface FuncionarioRepository extends JpaRepository<Funcionario, Long> 
     List<Funcionario> findByEmpresa(Empresa empresa);
 
     List<Funcionario> findByAtivoTrue();
-
+List<Funcionario> findByEmpresaId(Long empresaId);
     boolean existsByUsuario(Usuario usuario);
 }

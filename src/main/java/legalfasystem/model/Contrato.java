@@ -1,10 +1,22 @@
 package legalfasystem.model;
 
-import jakarta.persistence.*;
-import legalfasystem.enums.StatusContrato;
-
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Map;
+
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import legalfasystem.enums.StatusContrato;
 
 @Entity
 @Table(name = "contrato")
@@ -21,6 +33,9 @@ public class Contrato {
     @Column(nullable = false)
     private StatusContrato status = StatusContrato.RASCUNHO;
 
+    @Column(nullable = false)
+    private String tipo = "Prestação de Serviços";
+
     @ManyToOne
     @JoinColumn(name = "empresa_id", nullable = false)
     private Empresa empresa;
@@ -33,80 +48,49 @@ public class Contrato {
     @JoinColumn(name = "template_id", nullable = false)
     private TemplateContrato template;
 
+    // Armazena dados do contrato em JSON
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "dados", columnDefinition = "json")
+    private Map<String, String> dados;
+
     @Column(name = "data_criacao", nullable = false)
     private LocalDateTime dataCriacao;
 
     @Column(name = "data_atualizacao")
     private LocalDateTime dataAtualizacao;
 
-    @OneToMany(mappedBy = "contrato", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<HistoricoStatusContrato> historicoStatus;
-
-    // Construtor JPA
     public Contrato() {
         this.dataCriacao = LocalDateTime.now();
         this.status = StatusContrato.RASCUNHO;
     }
 
-    public Contrato(String titulo, StatusContrato status, Empresa empresa, Funcionario funcionarioResponsavel, TemplateContrato template, LocalDateTime dataCriacao, LocalDateTime dataAtualizacao, List<HistoricoStatusContrato> historicoStatus) {
+    // Getters e Setters
+    public Long getId() { return id; }
+    public String getTitulo() { return titulo; }
+    public void setTitulo(String titulo) { 
         this.titulo = titulo;
-        this.status = status;
-        this.empresa = empresa;
-        this.funcionarioResponsavel = funcionarioResponsavel;
-        this.template = template;
-        this.dataCriacao = dataCriacao;
-        this.dataAtualizacao = dataAtualizacao;
-        this.historicoStatus = historicoStatus;
+        this.dataAtualizacao = LocalDateTime.now();
     }
-
-    // Getters e setters
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getTitulo() {
-        return titulo;
-    }
-
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
-
-    public StatusContrato getStatus() {
-        return status;
-    }
-
-    public void setStatus(StatusContrato status) {
+    public StatusContrato getStatus() { return status; }
+    public void setStatus(StatusContrato status) { 
         this.status = status;
         this.dataAtualizacao = LocalDateTime.now();
     }
-
-    public Empresa getEmpresa() {
-        return empresa;
+    public String getTipo() { return tipo; }
+    public void setTipo(String tipo) { this.tipo = tipo; }
+    public Empresa getEmpresa() { return empresa; }
+    public void setEmpresa(Empresa empresa) { this.empresa = empresa; }
+    public Funcionario getFuncionarioResponsavel() { return funcionarioResponsavel; }
+    public void setFuncionarioResponsavel(Funcionario funcionarioResponsavel) { 
+        this.funcionarioResponsavel = funcionarioResponsavel; 
     }
-
-    public void setEmpresa(Empresa empresa) {
-        this.empresa = empresa;
+    public TemplateContrato getTemplate() { return template; }
+    public void setTemplate(TemplateContrato template) { this.template = template; }
+    public Map<String, String> getDados() { return dados; }
+    public void setDados(Map<String, String> dados) { 
+        this.dados = dados;
+        this.dataAtualizacao = LocalDateTime.now();
     }
-
-    public Funcionario getFuncionarioResponsavel() {
-        return funcionarioResponsavel;
-    }
-
-    public void setFuncionarioResponsavel(Funcionario funcionarioResponsavel) {
-        this.funcionarioResponsavel = funcionarioResponsavel;
-    }
-
-    public LocalDateTime getDataCriacao() {
-        return dataCriacao;
-    }
-
-    public LocalDateTime getDataAtualizacao() {
-        return dataAtualizacao;
-    }
-
-    public List<HistoricoStatusContrato> getHistoricoStatus() {
-        return historicoStatus;
-    }
+    public LocalDateTime getDataCriacao() { return dataCriacao; }
+    public LocalDateTime getDataAtualizacao() { return dataAtualizacao; }
 }

@@ -1,7 +1,8 @@
 package legalfasystem.repository;
 
-import legalfasystem.model.TemplateContrato;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface TemplateContratoRepository extends JpaRepository<TemplateContrato, Integer> {
+import legalfasystem.model.TemplateContrato;
+
+public interface TemplateContratoRepository extends JpaRepository<TemplateContrato, Long> {
 }
