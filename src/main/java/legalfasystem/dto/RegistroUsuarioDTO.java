@@ -12,19 +12,17 @@ public record RegistroUsuarioDTO(
 
         @Size(min = 6, max = 20, message = "A senha deve ter entre 6 e 20 caracteres")
         @Pattern(
-                regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{6,}$",
+                regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?]).{6,}$",
                 message = "A senha deve conter pelo menos uma letra maiúscula, uma minúscula, um número e um caractere especial"
         )
-        @NotBlank(message = "A senha é obrigatória")
         String senha,
 
-        @NotNull(message = "O role é obrigatória")
+        @NotNull(message = "O role é obrigatório")
         UsuarioPerfil role,
 
-        @NotNull(message = "Nome completo do funcionário é obrigatório")
+        @NotBlank(message = "Nome completo é obrigatório")
         String nomeCompleto,
 
-        @NotNull(message = "O Código de registro da empresa é obrigatoria")
+        @NotNull(message = "O ID da empresa é obrigatório")
         Long empresaId
-
 ) {}

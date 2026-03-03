@@ -37,7 +37,8 @@ protected void doFilterInternal(HttpServletRequest request, HttpServletResponse 
         UserDetails usuario = usuarioRepository.findByLogin(login)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado: " + login));
 
-        // LOG DAS AUTHORITIES
+        // LOG DAS AUT
+        // HORITIES
         System.out.println("🔑 Authorities do usuário: " + usuario.getAuthorities());
         
         var authentication = new UsernamePasswordAuthenticationToken(usuario, null, usuario.getAuthorities());

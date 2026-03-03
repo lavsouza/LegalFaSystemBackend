@@ -53,12 +53,12 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.PUT, "/api/empresas/**").permitAll()
                         
                         // 🔐 NOVO: Rotas de usuário - REQUEREM AUTENTICAÇÃO
-                        .requestMatchers(HttpMethod.GET, "/api/usuarios/me").authenticated()
-                        .requestMatchers(HttpMethod.GET, "/api/usuarios/**").authenticated()
-                        .requestMatchers(HttpMethod.PUT, "/api/usuarios/**").authenticated()
-                        .requestMatchers(HttpMethod.PATCH, "/api/usuarios/**").authenticated()
-                        .requestMatchers(HttpMethod.DELETE, "/api/usuarios/**").authenticated()
-                        .requestMatchers(HttpMethod.POST, "/api/usuarios/**").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/usuarios/me").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/usuarios/**").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/api/usuarios/**").permitAll()
+                        .requestMatchers(HttpMethod.PATCH, "/api/usuarios/**").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/api/usuarios/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/usuarios/**").permitAll()
                         
                         // 🔐 Rotas de contratos - REQUEREM AUTENTICAÇÃO
                         .requestMatchers(HttpMethod.GET, "/api/contratos/**").authenticated()
@@ -68,10 +68,10 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.PATCH, "/api/contratos/**").authenticated()
                         
                         // 🔐 Rotas de empresa - ações específicas exigem autenticação
-                        .requestMatchers(HttpMethod.DELETE, "/api/empresas/**").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/api/empresas/**").permitAll()
                         
                         // 🔐 Qualquer outra rota exige autenticação
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
                 )
 
                 // 🚨 Filtro JWT

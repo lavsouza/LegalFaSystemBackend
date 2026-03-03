@@ -90,23 +90,45 @@ public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid Authentication
     return ResponseEntity.ok(new LoginResponseDTO(token, usuarioDTO));
 }
 
-    @PostMapping("/register")
-    public ResponseEntity<Void> register(@RequestBody @Valid RegistroUsuarioDTO data) {
+ @PostMapping("/register")
+public ResponseEntity<?> register(@RequestBody @Valid RegistroUsuarioDTO data) {
 
-        if (usuarioRepository.findByLogin(data.login()) != null) {
-            return ResponseEntity.badRequest().build();
-        }
+    System.out.println("📥 [REGISTER] Requisição recebida");
+    System.out.println("➡️ login: " + data.login());
+    System.out.println("➡️ role: " + data.role());
+    System.out.println("➡️ nomeCompleto: " + data.nomeCompleto());
+    System.out.println("➡️ empresaId: " + data.empresaId());
 
-        // Cria usuário
+    try {
+        // 1️⃣ Verificar se usuário já existe (mais eficiente)
+    if (usuarioRepository.existsByLogin(data.login())) {
+        System.out.println("❌ [REGISTER] Login já existe: " + data.login());
+        return ResponseEntity.badRequest()
+                .body("Login já cadastrado");
+    }
+
+        // 2️⃣ Criar usuário
+        System.out.println("🛠️ [REGISTER] Criando usuário...");
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.senha());
-        Usuario newUser = new Usuario(data.login(), encryptedPassword, data.role());
-        usuarioRepository.save(newUser);
 
-        // Busca empresa pelo ID
+        Usuario newUser = new Usuario(
+                data.login(),
+                encryptedPassword,
+                data.role()
+        );
+
+        usuarioRepository.save(newUser);
+        System.out.println("✅ [REGISTER] Usuário salvo com ID: " + newUser.getId());
+
+        // 3️⃣ Buscar empresa
+        System.out.println("🔍 [REGISTER] Buscando empresa ID: " + data.empresaId());
         Empresa empresa = empresaRepository.findById(data.empresaId())
                 .orElseThrow(() -> new RuntimeException("Empresa não encontrada"));
 
-        // Cria funcionário
+        System.out.println("✅ [REGISTER] Empresa encontrada: " + empresa.getRazaoSocial());
+
+        // 4️⃣ Criar funcionário
+        System.out.println("🛠️ [REGISTER] Criando funcionário...");
         Funcionario newFunc = new Funcionario(
                 newUser,
                 empresa,
@@ -116,11 +138,19 @@ public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid Authentication
         );
 
         funcionarioService.salvar(newFunc);
+        System.out.println("✅ [REGISTER] Funcionário criado com sucesso");
 
+        System.out.println("🎉 [REGISTER] Registro finalizado com sucesso!");
         return ResponseEntity.status(HttpStatus.CREATED).build();
+
+    } catch (Exception e) {
+        System.out.println("🔥 [REGISTER] ERRO AO REGISTRAR USUÁRIO");
+        e.printStackTrace();
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("Erro interno ao registrar usuário");
     }
 }
-
+} 
 
 
 
